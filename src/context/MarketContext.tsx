@@ -21,11 +21,17 @@ export const MarketProvider = ({ children }: { children: ReactNode }) => {
     const fetchData = async () => {
       try {
         const result = await getMarketData();
-        setData(result);
-        setLastUpdated(new Date());
-        setLoading(false);
+        // Only stop loading if we actually got data. 
+        // If result is empty (backend down), we keep loading state to show Skeletons/Spinner 
+        // effectively indicating "waiting for connection".
+        if (result && result.length > 0) {
+            setData(result);
+            setLastUpdated(new Date());
+            setLoading(false);
+        }
       } catch (error) {
         console.error('Failed to fetch data', error);
+        // Do not set loading(false) here, keep retrying visually
       }
     };
 

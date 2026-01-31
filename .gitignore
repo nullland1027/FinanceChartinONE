@@ -19,6 +19,14 @@ dist-ssr
 # Testing
 coverage
 
+# Python
+__pycache__/
+*.py[cod]
+*$py.class
+.pytest_cache/
+.venv/
+venv/
+
 # Editor directories and files
 .vscode/*
 !.vscode/extensions.json

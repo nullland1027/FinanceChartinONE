@@ -5,6 +5,7 @@
   "type": "module",
   "scripts": {
     "dev": "vite",
+    "server": "python3 backend/main.py",
     "build": "tsc -b && vite build",
     "lint": "eslint .",
     "preview": "vite preview"
