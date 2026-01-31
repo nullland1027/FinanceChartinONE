@@ -24,7 +24,8 @@ export const MarketTimeline = () => {
     <div className="bg-white p-6 rounded-xl shadow-sm border border-gray-100 mb-8">
       <h2 className="text-lg font-bold text-gray-800 mb-6">24小时全球市场状态 (北京时间)</h2>
       
-      <div className="relative h-48">
+      {/* Increased height to accommodate more rows (6 markets) */}
+      <div className="relative h-80">
         {/* Grid Lines */}
         <div className="absolute inset-0 flex justify-between text-xs text-gray-300 pointer-events-none select-none">
           {[0, 4, 8, 12, 16, 20, 24].map((hour) => (

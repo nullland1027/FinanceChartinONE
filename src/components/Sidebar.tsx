@@ -1,16 +1,17 @@
 import { NavLink } from 'react-router-dom';
-import { LayoutDashboard, Globe, Coins } from 'lucide-react';
+import { LayoutDashboard, Globe, Coins, Star } from 'lucide-react';
 import { clsx } from 'clsx';
 
 export const Sidebar = () => {
   const navItems = [
     { to: '/', icon: LayoutDashboard, label: '首页' },
+    { to: '/core', icon: Star, label: '核心关注' },
     { to: '/stocks', icon: Globe, label: '全球股市' },
     { to: '/commodities', icon: Coins, label: '大宗商品' },
   ];
 
   return (
-    <aside className="w-64 bg-gray-900 text-white min-h-screen flex flex-col fixed left-0 top-0">
+    <aside className="w-64 bg-gray-900 text-white min-h-screen flex flex-col fixed left-0 top-0 z-50">
       <div className="p-6 border-b border-gray-800">
         <h1 className="text-xl font-bold tracking-wider flex items-center gap-2">
           <span className="text-indigo-500">Finance</span>ONE
