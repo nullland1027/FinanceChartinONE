@@ -50,8 +50,16 @@ export const MarketTimeline = () => {
         {/* Market Rows */}
         <div className="relative z-10 flex flex-col justify-evenly h-full pt-2 pb-6">
             {MARKET_HOURS.map((market) => {
+                // Calculate market local time to determine day of week
+                // UTC Time = Local Time + TimezoneOffset (minutes)
+                // Market Time = UTC Time + Market Timezone (hours)
+                const utcTime = now.getTime() + now.getTimezoneOffset() * 60000;
+                const marketTime = new Date(utcTime + (market.timezone * 3600000));
+                const marketDay = marketTime.getDay();
+                const isWeekend = marketDay === 0 || marketDay === 6; // Sunday or Saturday
+
                 // Check if currently open (naive check against display periods)
-                const isOpen = market.displayPeriodsBeijingTime?.some(p => {
+                const isTimeMatching = market.displayPeriodsBeijingTime?.some(p => {
                     const [sh, sm] = p.start.split(':').map(Number);
                     const [eh, em] = p.end.split(':').map(Number);
                     const s = sh + sm/60;
@@ -60,6 +68,8 @@ export const MarketTimeline = () => {
                     // Handle crossing midnight (e.g. 22:00 - 05:00 is split into 22-24 and 0-5 in config)
                     return currentHour >= s && currentHour < e;
                 });
+
+                const isOpen = !isWeekend && isTimeMatching;
 
                 return (
                     <div key={market.id} className="flex items-center group">

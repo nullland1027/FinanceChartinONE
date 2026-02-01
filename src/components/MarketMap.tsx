@@ -36,7 +36,14 @@ export const MarketMap = () => {
             }
           </Geographies>
           {MARKET_HOURS.map((market) => {
-            const isOpen = market.displayPeriodsBeijingTime?.some(p => {
+            // Calculate market local time to determine day of week
+            const now = new Date();
+            const utcTime = now.getTime() + now.getTimezoneOffset() * 60000;
+            const marketTime = new Date(utcTime + (market.timezone * 3600000));
+            const marketDay = marketTime.getDay();
+            const isWeekend = marketDay === 0 || marketDay === 6;
+
+            const isTimeMatching = market.displayPeriodsBeijingTime?.some(p => {
                 const [sh, sm] = p.start.split(':').map(Number);
                 const [eh, em] = p.end.split(':').map(Number);
                 const s = sh + sm/60;
@@ -45,10 +52,14 @@ export const MarketMap = () => {
             });
 
             // Fallback check
-            let isMarketOpen = isOpen;
+            let isMarketOpen = !isWeekend && isTimeMatching;
             if (market.id === 'cn_a_share') {
                  const h = currentHour;
-                 isMarketOpen = (h >= 9.5 && h < 11.5) || (h >= 13 && h < 15);
+                 // CN A-share weekend check is covered by generic check above (timezone +8 matches Beijing)
+                 // But we keep the specific hour check if needed, but 'isTimeMatching' should cover it if config is correct.
+                 // The original code had a hardcoded override for CN A Share hours, let's preserve that logic but add weekend check.
+                 const isHoursOpen = (h >= 9.5 && h < 11.5) || (h >= 13 && h < 15);
+                 isMarketOpen = !isWeekend && isHoursOpen;
             }
 
             return (
