@@ -41,6 +41,12 @@ market_data_store = [
     # US Indices
     {"symbol": "IXIC", "name": "纳斯达克", "price": 15628.95, "change": 120.45, "changePercent": 0.78, "type": "index", "region": "US"},
     {"symbol": "GSPC", "name": "标普 500", "price": 4927.93, "change": 25.40, "changePercent": 0.52, "type": "index", "region": "US"},
+    # Crypto
+    {"symbol": "BTC-USD", "name": "Bitcoin", "price": 42000.00, "change": 500.00, "changePercent": 1.2, "type": "crypto"},
+    {"symbol": "ETH-USD", "name": "Ethereum", "price": 2300.00, "change": 30.00, "changePercent": 1.3, "type": "crypto"},
+    {"symbol": "BNB-USD", "name": "BNB", "price": 300.00, "change": 5.00, "changePercent": 1.6, "type": "crypto"},
+    {"symbol": "SOL-USD", "name": "Solana", "price": 95.00, "change": 3.00, "changePercent": 3.2, "type": "crypto"},
+    {"symbol": "DOGE-USD", "name": "Dogecoin", "price": 0.08, "change": 0.001, "changePercent": 1.25, "type": "crypto"},
 ]
 
 async def update_prices_periodically():

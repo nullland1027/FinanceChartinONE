@@ -4,6 +4,6 @@ export interface MarketData {
   price: number;
   change: number;
   changePercent: number;
-  type: 'commodity' | 'index';
+  type: 'commodity' | 'index' | 'crypto';
   region?: 'CN' | 'US' | 'Global';
 }

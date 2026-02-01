@@ -1,5 +1,5 @@
 import { NavLink } from 'react-router-dom';
-import { LayoutDashboard, Globe, Coins, Star } from 'lucide-react';
+import { LayoutDashboard, Globe, Coins, Star, Bitcoin } from 'lucide-react';
 import { clsx } from 'clsx';
 
 export const Sidebar = () => {
@@ -8,6 +8,7 @@ export const Sidebar = () => {
     { to: '/core', icon: Star, label: '核心关注' },
     { to: '/stocks', icon: Globe, label: '全球股市' },
     { to: '/commodities', icon: Coins, label: '大宗商品' },
+    { to: '/crypto', icon: Bitcoin, label: '数字货币' },
   ];
 
   return (
