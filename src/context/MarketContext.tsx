@@ -8,6 +8,8 @@ interface MarketContextType {
   data: MarketData[];
   loading: boolean;
   lastUpdated: Date;
+  refreshInterval: number;
+  setRefreshInterval: (interval: number) => void;
 }
 
 const MarketContext = createContext<MarketContextType | undefined>(undefined);
@@ -16,6 +18,17 @@ export const MarketProvider = ({ children }: { children: ReactNode }) => {
   const [data, setData] = useState<MarketData[]>([]);
   const [loading, setLoading] = useState(true);
   const [lastUpdated, setLastUpdated] = useState<Date>(new Date());
+  
+  // Initialize from localStorage or config
+  const [refreshInterval, setRefreshIntervalState] = useState<number>(() => {
+    const saved = localStorage.getItem('app-refresh-interval');
+    return saved ? parseInt(saved, 10) : APP_CONFIG.UPDATE_INTERVAL;
+  });
+
+  const setRefreshInterval = (interval: number) => {
+    setRefreshIntervalState(interval);
+    localStorage.setItem('app-refresh-interval', interval.toString());
+  };
 
   useEffect(() => {
     const fetchData = async () => {
@@ -36,13 +49,13 @@ export const MarketProvider = ({ children }: { children: ReactNode }) => {
     };
 
     fetchData(); // Initial fetch
-    const interval = setInterval(fetchData, APP_CONFIG.UPDATE_INTERVAL);
+    const intervalId = setInterval(fetchData, refreshInterval);
 
-    return () => clearInterval(interval);
-  }, []);
+    return () => clearInterval(intervalId);
+  }, [refreshInterval]);
 
   return (
-    <MarketContext.Provider value={{ data, loading, lastUpdated }}>
+    <MarketContext.Provider value={{ data, loading, lastUpdated, refreshInterval, setRefreshInterval }}>
       {children}
     </MarketContext.Provider>
   );
