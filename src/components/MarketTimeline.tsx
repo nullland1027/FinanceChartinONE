@@ -1,8 +1,10 @@
 import { useState, useEffect } from 'react';
 import { MARKET_HOURS } from '../config';
+import { useTheme } from '../context/ThemeContext';
 
 export const MarketTimeline = () => {
   const [now, setNow] = useState(new Date());
+  const { classes } = useTheme();
 
   useEffect(() => {
     const timer = setInterval(() => setNow(new Date()), 1000);
@@ -88,7 +90,7 @@ export const MarketTimeline = () => {
                                 return (
                                     <div 
                                         key={idx}
-                                        className={`absolute h-full top-0 rounded-sm opacity-80 ${isOpen ? 'bg-indigo-500 shadow-sm' : 'bg-indigo-200'}`}
+                                        className={`absolute h-full top-0 rounded-sm opacity-80 ${isOpen ? `${classes.primaryBg} shadow-sm` : classes.light}`}
                                         style={{ left: `${start}%`, width: `${width}%` }}
                                     ></div>
                                 )

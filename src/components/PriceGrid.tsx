@@ -1,5 +1,6 @@
 import { PriceCard } from './PriceCard';
 import type { MarketData } from '../types';
+import { useTheme } from '../context/ThemeContext';
 
 interface PriceGridProps {
   data: MarketData[];
@@ -28,6 +29,8 @@ const SkeletonCard = () => (
 );
 
 export const PriceGrid = ({ data, title, icon, loading = false }: PriceGridProps) => {
+  const { classes } = useTheme();
+
   // If loading, show skeletons. If not loading but empty, show "No Data".
   if (!loading && data.length === 0) {
     return <div className="text-gray-400 p-4">暂无数据</div>;
@@ -36,7 +39,7 @@ export const PriceGrid = ({ data, title, icon, loading = false }: PriceGridProps
   return (
     <section className="mb-8 animate-in fade-in duration-500">
       {title && (
-        <h2 className="text-xl font-semibold text-gray-700 mb-4 px-3 border-l-4 border-indigo-500 flex items-center gap-2">
+        <h2 className={`text-xl font-semibold text-gray-700 mb-4 px-3 border-l-4 ${classes.border} flex items-center gap-2`}>
             <span>{icon}</span> {title}
         </h2>
       )}
