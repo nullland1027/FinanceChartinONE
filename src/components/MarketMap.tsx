@@ -1,10 +1,15 @@
 import { ComposableMap, Geographies, Geography, Marker } from 'react-simple-maps';
 import { MARKET_HOURS } from '../config';
+import { getBeijingPeriods } from '../utils/timeUtils';
 
 const geoUrl = "https://cdn.jsdelivr.net/npm/world-atlas@2/countries-110m.json";
 
 export const MarketMap = () => {
-  const currentHour = new Date().getHours() + new Date().getMinutes() / 60;
+  // Calculate Beijing Time (UTC+8)
+  const now = new Date();
+  const utc = now.getTime() + (now.getTimezoneOffset() * 60000);
+  const beijingTime = new Date(utc + (3600000 * 8));
+  const currentHour = beijingTime.getHours() + beijingTime.getMinutes() / 60;
 
   return (
     <div className="bg-white p-4 rounded-xl shadow-sm border border-gray-100 mb-8 w-full max-w-6xl mx-auto">
@@ -37,13 +42,13 @@ export const MarketMap = () => {
           </Geographies>
           {MARKET_HOURS.map((market) => {
             // Calculate market local time to determine day of week
-            const now = new Date();
-            const utcTime = now.getTime() + now.getTimezoneOffset() * 60000;
-            const marketTime = new Date(utcTime + (market.timezone * 3600000));
+            const marketTime = new Date(utc + (market.timezone * 3600000));
             const marketDay = marketTime.getDay();
             const isWeekend = marketDay === 0 || marketDay === 6;
 
-            const isTimeMatching = market.displayPeriodsBeijingTime?.some(p => {
+            const beijingPeriods = getBeijingPeriods(market.localPeriods, market.timezone);
+
+            const isTimeMatching = beijingPeriods.some(p => {
                 const [sh, sm] = p.start.split(':').map(Number);
                 const [eh, em] = p.end.split(':').map(Number);
                 const s = sh + sm/60;
